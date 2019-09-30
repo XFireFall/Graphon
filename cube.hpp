@@ -1,6 +1,8 @@
 #ifndef CUBE_H_INCLUDED
 #define CUBE_H_INCLUDED
 
+#include <time.h>
+
 #include "vector.hpp"
 #include "canvas.hpp"
 
@@ -13,13 +15,12 @@ public:
     : points_()
     , center_(0, 0, 0)
     {
+        srandom((unsigned long) time(NULL));
         for (int i = 0; i < 8; i++) {
             points_[i].Init(arr[i]);
+            //points_[i].setColor({random() % 255, random() % 255, random() % 255});
             points_[i].setColor(col_red);
         }
-        
-        for(int i = 0; i < 8; i++)
-            points_[i] /= 10;
     }
     
     void Rotate(Matrix3f &m) {
@@ -39,15 +40,26 @@ public:
         center_ = Vector3f(v);
     }
     
-    void Draw(Canvas &canvas) {
-        //canvas.DrawTriangle(points_[0], points_[1], points_[5]);
-        /*canvas.DrawTriangle(points_[0], points_[1], points_[4]);
+    void Draw(Canvas &canvas) {        
+        canvas.DrawTriangle(points_[0], points_[1], points_[2]);
+        canvas.DrawTriangle(points_[2], points_[3], points_[0]);
         
-        canvas.DrawTriangle(points_[0], points_[2], points_[4]);
-        canvas.DrawTriangle(points_[0], points_[2], points_[6]);
+        canvas.DrawTriangle(points_[4], points_[7], points_[6]);
+        canvas.DrawTriangle(points_[6], points_[5], points_[4]);
         
-        canvas.DrawTriangle(points_[0], points_[3], points_[5]);
-        canvas.DrawTriangle(points_[0], points_[3], points_[6]);*/
+        canvas.DrawTriangle(points_[0], points_[4], points_[5]);
+        canvas.DrawTriangle(points_[5], points_[1], points_[0]);
+        
+        canvas.DrawTriangle(points_[3], points_[2], points_[6]);
+        canvas.DrawTriangle(points_[6], points_[7], points_[3]);
+        
+        canvas.DrawTriangle(points_[2], points_[1], points_[5]);
+        canvas.DrawTriangle(points_[5], points_[6], points_[2]);
+        
+        canvas.DrawTriangle(points_[3], points_[7], points_[4]);
+        canvas.DrawTriangle(points_[4], points_[0], points_[3]);
+        
+        return;
         
         {
             canvas.DrawLine3(points_[0], points_[1]);

@@ -24,7 +24,7 @@
 #define PF_Y( y ) (-1 + ((float) 2 * (W_HEIGHT - 1 - y) + 1) / (W_HEIGHT))
 */
 
-class Rect
+/*class Rect
 {
     int left_, low_, width_, height_;
 public:
@@ -42,21 +42,21 @@ public:
             }
         }
     }
-};
+};*/
 
 int main() {
-    Canvas canvas = Canvas();
+    Canvas canvas = Canvas(1920, 1080);
     
     float cube_arr[8][3] = {
-        { 1, 1, 1},
-        {-1, 1, 1},
-        { 1,-1, 1},
+        {-1,-1,-1},
+        {-1, 1,-1},
         { 1, 1,-1},
+        { 1,-1,-1},
         
         {-1,-1, 1},
-        {-1, 1,-1},
-        { 1,-1,-1},
-        {-1,-1,-1}};
+        {-1, 1, 1},
+        { 1, 1, 1},
+        { 1,-1, 1}};
     Cube cube = Cube(cube_arr);
     Vector3f c = Vector3f(.1, .1, .1, col_red);
     //cube.setCenter(c);
@@ -79,14 +79,14 @@ int main() {
         
         canvas.Rotate(m);
         cube.Rotate(m);
-        triangle.Rotate(m);
+        //triangle.Rotate(m);
         
         canvas.Clear();
         
         canvas.DrawChords();
-        canvas.DrawZoX();
+        //canvas.DrawZoX();
         cube.Draw(canvas);
-        triangle.Draw(canvas);
+        //triangle.Draw(canvas);
         
         canvas.Display();
     }

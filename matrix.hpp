@@ -26,11 +26,11 @@ public:
               cF = cos(F);
         float sT = sin(T),
               cT = cos(T);
-
+        
         float arr[3][3] = {
-            {cT * cF, -sF, -sT * cF},
-            {cT * sF,  cF, -sT * sF},
-            {sT     ,   0,  cT     }};
+            { cF, -sT * sF, cT * sF},
+            {  0,  cT     , sT     },
+            {-sF, -sT * cF, cT * cF}};
         
         memcpy(arr_, arr, 9 * sizeof(float));
         Transpose();
@@ -42,7 +42,6 @@ public:
                 std::swap(arr_[i][j], arr_[j][i]);
     }
     
-    // Что я сделяль вы только гляньте
     float const (&operator[](int i) const)[3] {
         return arr_[i];
     }

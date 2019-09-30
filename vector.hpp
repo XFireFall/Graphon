@@ -52,46 +52,34 @@ public:
             (*this)[i] = arr[i];
     }
     
-    void Init(float x, float y, float z) {
-        x_ = x;
-        y_ = y;
-        z_ = z;
-    }
+    void Init(float x, float y, float z) { x_ = x; y_ = y; z_ = z; }
     
-    void setColor(color_t col) {
-        col_ = col;
-    }
+    void setColor(color_t col) { col_ = col; }
     
-    void Move(float x, float y, float z) {
-        x_ += x;
-        y_ += y;
-        z_ += z;
+    void Move(float x, float y, float z) { x_ += x; y_ += y; z_ += z; }
+    
+    float len() {
+        return sqrt(x_ * x_ + y_ * y_ + z_ * z_);
     }
     
     float &operator[](int i) {
         switch (i) {
-        case 0: return z_;
-        case 1: return x_;
-        case 2: return y_;
-        
-        default:
-            std::terminate;
-            break;
+        case 0:  return x_;
+        case 1:  return y_;
+        case 2:  return z_;
+        default: break;
         }
-        std::terminate();
+        throw("index out of range");
     }
     
     float operator[](int i) const {
         switch (i) {
-        case 0: return z_;
-        case 1: return x_;
-        case 2: return y_;
-        
-        default:
-            std::terminate;
-            break;
+        case 0:  return x_;
+        case 1:  return y_;
+        case 2:  return z_;
+        default: break;
         }
-        std::terminate();
+        throw("index out of range");
     }
     
     Vector3f &operator+(const Vector3f &other) const {
@@ -118,18 +106,16 @@ public:
         return *res;
     }
     
+    float scal(const Vector3f &v) {
+        return x_ * v.getX() + y_ * v.getY() + z_ * v.getZ();
+    }
     
     void operator*=(const Matrix3f &m) {
-        float tmp[3] = {(*this)[0], (*this)[1], (*this)[2]};
+        float tmp[3] = {x_, y_, z_};
         this->Init(0, 0, 0);
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++)
                 (*this)[i] += m[i][j] * tmp[j];
-    }
-    
-    void operator+=(const Vector3f &v) {
-        for (int i = 0; i < 3; i++)
-            (*this)[i] += v[i];
     }
     
     Vector3f &operator*(const Vector3f &v) {
@@ -139,16 +125,9 @@ public:
         return *res;
     }
     
-    void operator-=(const Vector3f &v) {
-        for (int i = 0; i < 3; i++)
-            (*this)[i] -= v[i];
-    }
-    
-    void operator/=(int k) {
-        x_ /= k;
-        y_ /= k;
-        z_ /= k;
-    }
+    void operator+=(const Vector3f &v) { x_ += v.getX(); y_ += v.getY(); z_ += v.getZ(); }
+    void operator-=(const Vector3f &v) { x_ -= v.getX(); y_ -= v.getY(); z_ -= v.getZ(); }
+    void operator/=(int k) { x_ /= k; y_ /= k; z_ /= k; }
     
     void Dump() const {
         printf("{% .3f, % .3f, % .3f}\n", x_, y_, z_);
