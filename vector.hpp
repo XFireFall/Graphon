@@ -8,6 +8,8 @@
 
 #include "matrix.hpp"
 
+//class Vector3f;
+
 typedef struct {unsigned char b, g, r, a;} color_t;
 const color_t col_red    = {0,   0,   255, 0};
 const color_t col_green  = {0,   255, 0,   0};
@@ -17,6 +19,31 @@ const color_t col_white  = {255, 255, 255, 0};
 const color_t col_black  = {0,   0,   0,   0};
 
 const color_t col_yellow = {0,   255, 255, 0};
+
+/*
+class Color
+{
+    color_t col_;
+public:
+    Color(color_t col)
+    : col_(col)
+    { }
+    
+    color_t getColor(void) const {
+        return col_;
+    }
+    
+    void operator*=(const Vector3f &v) {
+        
+    }
+    
+    void operator*=(float k) {
+        col_.r *= k;
+        col_.g *= k;
+        col_.b *= k;
+    }
+};
+*/
 
 class Vector3f
 {
@@ -82,32 +109,21 @@ public:
         throw("index out of range");
     }
     
-    Vector3f &operator+(const Vector3f &other) const {
-        return *(new Vector3f(x_ + other.x_, y_ + other.y_, z_ + other.z_));
-    }
-    
-    Vector3f &operator-(const Vector3f &other) const {
-        return *(new Vector3f(x_ - other.x_, y_ - other.y_, z_ - other.z_));
-    }
-    
-    Vector3f &operator/(int k) const {
-        return *(new Vector3f(x_ / k, y_ / k, z_ / k));
-    }
-    
-    Vector3f &operator*(int k) const {
-        return *(new Vector3f(x_ * k, y_ * k, z_ * k));
-    }
+    float     len       (void)              const { return           sqrt( x_ * x_ + y_ * y_ + z_ * z_);  }
+    float     scal      (const Vector3f &v) const { return                 x_*v.x_ + y_*v.y_ + z_*v.z_;   }
+    Vector3f &operator +(const Vector3f &v) const { return *(new Vector3f( x_+v.x_,  y_+v.y_,  z_+v.z_)); }
+    Vector3f &operator -(const Vector3f &v) const { return *(new Vector3f( x_-v.x_,  y_-v.y_,  z_-v.z_)); }
+    Vector3f &operator -(void)              const { return *(new Vector3f(-x_,      -y_,      -z_     )); }
+    Vector3f &operator /(float k)           const { return *(new Vector3f( x_/k,     y_/k,     z_/k   )); }
+    Vector3f &operator *(float k)           const { return *(new Vector3f( x_*k,     y_*k,     z_*k   )); }
+    void      operator+=(const Vector3f &v)       { x_ += v.x_; y_ += v.y_; z_ += v.z_; }
+    void      operator-=(const Vector3f &v)       { x_ -= v.x_; y_ -= v.y_; z_ -= v.z_; }
+    void      operator/=(float k)                 { x_ /= k;    y_ /= k;    z_ /= k;    }
     
     Vector3f &operator*(const Matrix3f &m) const {
-        Vector3f *res = new Vector3f(0, 0, 0);
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                (*res)[i] += m[i][j] * (*this)[j];
+        Vector3f *res = new Vector3f(*this);
+        (*res) *= m;
         return *res;
-    }
-    
-    float scal(const Vector3f &v) {
-        return x_ * v.getX() + y_ * v.getY() + z_ * v.getZ();
     }
     
     void operator*=(const Matrix3f &m) {
@@ -123,14 +139,6 @@ public:
         for (int i = 0; i < 3; i++)
             (*res)[i] = (*this)[(i + 1) % 3] * v[(i + 2) % 3] - (*this)[(i + 2) % 3] * v[(i + 1) % 3];
         return *res;
-    }
-    
-    void operator+=(const Vector3f &v) { x_ += v.getX(); y_ += v.getY(); z_ += v.getZ(); }
-    void operator-=(const Vector3f &v) { x_ -= v.getX(); y_ -= v.getY(); z_ -= v.getZ(); }
-    void operator/=(int k) { x_ /= k; y_ /= k; z_ /= k; }
-    
-    void Dump() const {
-        printf("{% .3f, % .3f, % .3f}\n", x_, y_, z_);
     }
 };
 

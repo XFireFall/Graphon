@@ -18,8 +18,8 @@ public:
         srandom((unsigned long) time(NULL));
         for (int i = 0; i < 8; i++) {
             points_[i].Init(arr[i]);
-            //points_[i].setColor({random() % 255, random() % 255, random() % 255});
-            points_[i].setColor(col_red);
+            points_[i].setColor({(unsigned char)(random() % 256), (unsigned char)(random() % 256), (unsigned char)(random() % 256)});
+            //points_[i].setColor(col_red);
         }
     }
     
@@ -58,35 +58,6 @@ public:
         
         canvas.DrawTriangle(points_[3], points_[7], points_[4]);
         canvas.DrawTriangle(points_[4], points_[0], points_[3]);
-        
-        return;
-        
-        {
-            canvas.DrawLine3(points_[0], points_[1]);
-            canvas.DrawLine3(points_[0], points_[2]);
-            canvas.DrawLine3(points_[0], points_[3]);
-            
-            canvas.DrawLine3(points_[7], points_[4]);
-            canvas.DrawLine3(points_[7], points_[5]);
-            canvas.DrawLine3(points_[7], points_[6]);
-            
-            canvas.DrawLine3(points_[4], points_[2]);
-            canvas.DrawLine3(points_[4], points_[1]);
-            
-            canvas.DrawLine3(points_[5], points_[3]);
-            canvas.DrawLine3(points_[5], points_[1]);
-            
-            canvas.DrawLine3(points_[6], points_[2]);
-            canvas.DrawLine3(points_[6], points_[3]);
-        }
-    }
-    
-    void Dump() {
-        puts("Cube dump:");
-        for(int i = 0; i < 8; i++) {
-            printf("\t");
-            points_[i].Dump();
-        }
     }
 };
 
